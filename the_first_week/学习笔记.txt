@@ -1,0 +1,27 @@
+一.storm-starter-master运行
+1.修改m2-pom.xml为pom.xml
+2.修改pom.xml
+    <dependency>
+      <groupId>storm</groupId>
+      <artifactId>storm</artifactId>
+      <version>0.9.0.1</version>
+      <!-- keep storm out of the jar-with-dependencies -->
+      <scope>provided</scope>
+    </dependency>
+为:
+    <dependency>
+      <groupId>org.apache.storm</groupId>
+      <artifactId>storm-core</artifactId>
+      <version>0.9.1-incubating</version>
+      <!-- keep storm out of the jar-with-dependencies -->
+      <scope>provided</scope>
+    </dependency>
+3.运行命名:
+	 mvn compile exec:java -Dstrom.topology=storm.starter.WordCountTopology
+
+4.mvn打包
+	mvn package5.本地模式运行storm
+	storm jar storm-starter-0.0.1-SNAPSHOT-jar-with-dependencies.jar storm.starter.RollingTopWords6.远程模式运行storm
+	storm jar storm-starter-0.0.1-SNAPSHOT-jar-with-dependencies.jar storm.starter.ExclamationTopology ExclamationTopology
+7.停止Topology命令
+	storm kill ExclamationTopology
