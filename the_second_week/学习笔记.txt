@@ -1,0 +1,8 @@
+1.zookeeper/bin/zkCli.sh
+	a.ls /
+	b.ls /storm
+	c.ls /storm/workerbeats
+2.mvn创建项目
+	mvn archetype:create -DgroupId=storm.test -DartifactId=teststorm -DpackageName=cn.dataguru.storm
+
+	mvn archetype:generate -DgroupId=storm.test -DartifactId=teststorm -DpackageName=cn.dataguru.storm
