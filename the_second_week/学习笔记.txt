@@ -6,3 +6,23 @@
 	mvn archetype:create -DgroupId=storm.test -DartifactId=teststorm -DpackageName=cn.dataguru.storm
 
 	mvn archetype:generate -DgroupId=storm.test -DartifactId=teststorm -DpackageName=cn.dataguru.storm
+
+3.mvn compile exec:java -Dstrom.topology=cn.dataguru.storm.WordCountTopology±®¥Ì
+	Failed to execute goal org.codehaus.mojo:exec-maven-plugin:1.6.0:java (default-cli) on project wordcount: The parameters 'mainClass' for goal org.codehaus.mojo:exec-maven-plugin:1.6.0:java are missing or invalid 
+
+pom.xmlº”…œ
+       <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.6.0</version>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>java</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration>
+                <mainClass>cn.dataguru.storm.WordCountTopology</mainClass>
+            </configuration>
+        </plugin>

@@ -1,0 +1,45 @@
+1.本地模式运行wordcount
+	mvn install
+	mvn compile exec:java -Dexec.mainClass="TopologyMain" -Dexec.args="/home/parallels/word.txt"
+
+2.分布式模式运行
+	storm jar wordcount-0.0.1-SNAPSHOT.jar TopologyMain /home/parallels/word.txt wordcount
+
+
+3.storm启动相关命令
+	storm nimbus &
+	storm ui &
+	storm supervisor &
+	storm logviewer &
+
+4..使用时storm发现worker日志报错
+	ava.lang.IllegalArgumentException: timeout value is negative  
+        at java.lang.Thread.sleep(Native Method)  
+        at backtype.storm.messaging.netty.Client.reconnect(Client.java:78)  
+        at backtype.storm.messaging.netty.StormClientHandler.exceptionCaught(StormClientHandler.java:108)  
+        at org.jboss.netty.handler.codec.frame.FrameDecoder.exceptionCaught(FrameDecoder.java:377)  
+        at org.jboss.netty.channel.Channels.fireExceptionCaught(Channels.java:525)  
+        at org.jboss.netty.channel.socket.nio.NioClientSocketPipelineSink.connect(NioClientSocketPipelineSink.java:124)  
+        at org.jboss.netty.channel.socket.nio.NioClientSocketPipelineSink.eventSunk(NioClientSocketPipelineSink.java:69)  
+        at org.jboss.netty.handler.codec.oneone.OneToOneEncoder.handleDownstream(OneToOneEncoder.java:54)  
+        at org.jboss.netty.channel.Channels.connect(Channels.java:634)  
+        at org.jboss.netty.channel.AbstractChannel.connect(AbstractChannel.java:207)  
+        at org.jboss.netty.bootstrap.ClientBootstrap.connect(ClientBootstrap.java:229)  
+        at org.jboss.netty.bootstrap.ClientBootstrap.connect(ClientBootstrap.java:182)  
+        at backtype.storm.messaging.netty.Client.reconnect(Client.java:80)  
+        at backtype.storm.messaging.netty.StormClientHandler.exceptionCaught(StormClientHandler.java:108)  
+        at org.jboss.netty.handler.codec.frame.FrameDecoder.exceptionCaught(FrameDecoder.java:377)  
+        at org.jboss.netty.channel.Channels.fireExceptionCaught(Channels.java:525)  
+        at org.jboss.netty.channel.socket.nio.NioClientSocketPipelineSink.connect(NioClientSocketPipelineSink.java:124)  
+        at org.jboss.netty.channel.socket.nio.NioClientSocketPipelineSink.eventSunk(NioClientSocketPipelineSink.java:69)  
+        at org.jboss.netty.handler.codec.oneone.OneToOneEncoder.handleDownstream(OneToOneEncoder.java:54)  
+        at org.jboss.netty.channel.Channels.connect(Channels.java:634)
+
+解决方案：在storm.yaml中加入如下配置
+storm.messaging.transport: "backtype.storm.messaging.netty.Context"  
+storm.messaging.netty.server_worker_threads: 1  
+storm.messaging.netty.client_worker_threads: 1  
+storm.messaging.netty.buffer_size: 5242880  
+storm.messaging.netty.max_retries: 100  
+storm.messaging.netty.max_wait_ms: 1000  
+storm.messaging.netty.min_wait_ms: 100  
