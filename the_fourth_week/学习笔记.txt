@@ -1,0 +1,33 @@
+1.storm drpc
+配置drpc服务,配置如下:
+ drpc.servers:
+    - "192.168.1.100"
+
+2.storm启动相关命令
+storm nimbus &
+storm ui &
+storm logviewer &
+storm drpc &
+
+storm supervisor &
+
+3.drpc调用(drpcCaller demo)
+a.storm jar drpcCaller-1.0-SNAPSHOT.jar com.wp.drpc1.BasicDRPCTopology
+b.storm jar drpcCaller-1.0-SNAPSHOT.jar com.wp.drpc2.ReachTopology
+分别跑客服端程序
+
+注意:
+(1). worker 对应的是slots,  即 worker 与 slot （槽，最终的端口）是一对一关系。
+(2). worker 里面包含了具体的 bolt 与 sbolt
+(3). worker 要占用端口，每个worker 占用一个端口，因为 worker 之间要进行数据的通信
+
+com.wp.drpc2.ReachTopology最初设置conf.setNumWorkers(6),客服端DrpcReach报错如下:
+Exception in thread "main" DRPCExecutionException(msg:Request failed)
+	at backtype.storm.generated.DistributedRPC$execute_result.read(DistributedRPC.java:904)
+	at org.apache.thrift7.TServiceClient.receiveBase(TServiceClient.java:78)
+	at backtype.storm.generated.DistributedRPC$Client.recv_execute(DistributedRPC.java:92)
+	at backtype.storm.generated.DistributedRPC$Client.execute(DistributedRPC.java:78)
+	at backtype.storm.utils.DRPCClient.execute(DRPCClient.java:71)
+	at com.wp.drpc2.DrpcReach.main(DrpcReach.java:10)
+高了2天,最后把conf.setNumWorkers(4)成功了,因为我只配了4个端口。
+
