@@ -1,0 +1,8 @@
+1.storm triden
+a. triden-hackaton
+第一个案例分别运行 Skeleton、Skeleton1、Skeleton2、Skeleton3
+第二个案例 运行PerLocationCounts1
+
+b. triden-wordcount
+运行TridentWordCount
+
